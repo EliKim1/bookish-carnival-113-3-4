@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 class Status(models.Model):
-    name = models.CharFiled(max_length=256)
+    name = models.CharField(max_length=256)
     decription = models.TextField()
 
     def __str__(self):
@@ -14,7 +14,7 @@ class Issue(models.Model):
     title = models.CharField(max_length=256)
     summary = models.CharField(max_length=256)
     description = models.TextField()
-    status = models.Foreignkey(
+    status = models.ForeignKey(
         Status,
         on_delete=models.CASCADE,
     )
