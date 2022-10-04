@@ -1,0 +1,36 @@
+from django.db import models
+
+from django.contrib.auth import get_user_model
+from django.urls import reverse
+
+class Status(models.Model):
+    name = models.CharFiled(max_length=256)
+    decription = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+class Issue(models.Model):
+    title = models.CharField(max_length=256)
+    summary = models.CharField(max_length=256)
+    description = models.TextField()
+    status = models.Foreignkey(
+        Status,
+        on_delete=models.CASCADE,
+    )
+    requester = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE,
+        related_name='requester'
+    )
+    assignee = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE,
+        blank=True, null=True,
+        related_name='assignee',
+    )
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('issue_detail', args=[self.id])
